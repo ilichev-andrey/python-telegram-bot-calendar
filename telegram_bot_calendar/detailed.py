@@ -11,9 +11,8 @@ PREV_ACTIONS = {DAY: GOTO, MONTH: GOTO, YEAR: NOTHING}
 class DetailedTelegramCalendar(TelegramCalendar):
     first_step = YEAR
 
-    def __init__(self, calendar_id=0, current_date=None, additional_buttons=None, locale='en',
-                 min_date=None,
-                 max_date=None, **kwargs):
+    def __init__(self, calendar_id=0, current_date=None, additional_buttons=None, locale=Locales.ENGLISH,
+                 min_date=None, max_date=None, **kwargs):
         super(DetailedTelegramCalendar, self).__init__(calendar_id, current_date=current_date,
                                                        additional_buttons=additional_buttons, locale=locale,
                                                        min_date=min_date, max_date=max_date)

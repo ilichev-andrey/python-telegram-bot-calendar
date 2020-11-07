@@ -5,7 +5,7 @@ from datetime import date
 
 from dateutil.relativedelta import relativedelta
 
-from telegram_bot_calendar.static import MONTHS, DAYS_OF_WEEK
+from telegram_bot_calendar.static import MONTHS, DAYS_OF_WEEK, Locales
 
 calendar.setfirstweekday(calendar.MONDAY)
 
@@ -41,7 +41,7 @@ class TelegramCalendar:
     _keyboard = None
     step = None
 
-    def __init__(self, calendar_id=0, current_date=None, additional_buttons=None, locale='en', min_date=None,
+    def __init__(self, calendar_id=0, current_date=None, additional_buttons=None, locale=Locales.ENGLISH, min_date=None,
                  max_date=None, **kwargs):
         """
 
