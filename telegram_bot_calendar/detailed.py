@@ -12,10 +12,12 @@ class DetailedTelegramCalendar(TelegramCalendar):
     first_step = YEAR
 
     def __init__(self, calendar_id=0, current_date=None, additional_buttons=None, locale=Locales.ENGLISH,
-                 min_date=None, max_date=None, **kwargs):
+                 min_date=None, max_date=None, include_dates=None, exclude_dates=None, **kwargs):
         super(DetailedTelegramCalendar, self).__init__(calendar_id, current_date=current_date,
                                                        additional_buttons=additional_buttons, locale=locale,
                                                        min_date=min_date, max_date=max_date)
+        self.include_dates = include_dates
+        self.exclude_dates = exclude_dates
 
     def _build(self, step=None, **kwargs):
         if not step:
@@ -151,9 +153,25 @@ class DetailedTelegramCalendar(TelegramCalendar):
         cl = calendar.monthcalendar(start.year, start.month)
         for week in cl:
             for day in week:
-                if day != 0 and self._valid_date(date(start.year, start.month, day)):
-                    dates.append(date(start.year, start.month, day))
-                else:
-                    dates.append(None)
+                dates.append(self._get_date(start, day))
 
         return dates
+
+    def _get_date(self, start: date, day: int) -> date or None:
+        if day == 0:
+            return None
+
+        current_date = date(start.year, start.month, day)
+        if self._is_include_date(current_date) and self._valid_date(current_date):
+            return current_date
+
+        return None
+
+    def _is_include_date(self, d: date) -> bool:
+        if self.exclude_dates is not None and d in self.exclude_dates:
+            return False
+
+        if self.include_dates is None:
+            return True
+
+        return d in self.include_dates
